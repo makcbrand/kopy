@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Video</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            color: white;
+        }
+        #video-container {
+            position: relative;
+            width: 640px;
+            height: 360px;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .button-container {
+            display: none;
+            position: absolute;
+            bottom: 10%;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: rgba(255, 255, 255, 1);
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <iframe id="video-frame" src="https://mega.nz/embed/DARQkYiZ#isaUr78RjKXgrE8EtM4Q3arHcqmVtGR7gqXASC-XZFI!1a" allowfullscreen allow="autoplay"></iframe>
+        <div class="button-container" id="button-container">
+            <button class="button" id="option1">Option 1</button>
+            <button class="button" id="option2">Option 2</button>
+        </div>
+    </div>
+
+    <script>
+        const videoFrame = document.getElementById('video-frame');
+        const buttonContainer = document.getElementById('button-container');
+        const option1 = document.getElementById('option1');
+        const option2 = document.getElementById('option2');
+
+        const videos = {
+            EPI0: 'https://mega.nz/embed/DARQkYiZ#isaUr78RjKXgrE8EtM4Q3arHcqmVtGR7gqXASC-XZFI!1a',
+            EPI1: 'https://mega.nz/embed/ydB3jajA#iN2dtV-dsWNJuE1Vg5MF9wE-Bd4NDb_cjWLRnkmdrTw!1a',
+            EPI1_2: 'https://mega.nz/embed/WUwRzBgK#0SzOSfPzgfnY_tIA8I2715bokVRT2_hOqi0gLdSa2Q4!1a',
+            EPI2: 'https://mega.nz/embed/GFwTTRZY#fjsHG1sjw_VRgPoLLMLc2gZS4_euqTq3YaMverFNDNU!1a',
+            EPI2_2: 'https://mega.nz/embed/6IATGYCY#5Y6PYI-k34uivCtI2lR59Z7oV9BKIMJGL38FBFf6MSw!1a',
+            EPI3: 'https://mega.nz/embed/vd5F0LIL#apUbHR9KhX_Cw1cZOjMUJ7dej_JdcjhmcLjuLJjKWuU!1a',
+            EPI3_1: 'https://mega.nz/embed/eYpwyIoA#Cm3frIvnydsmOp7pquvskX2pxuikmD3gDo_aL3WhqEw!1a',
+            EPI3_2: 'https://mega.nz/embed/HFRCiapb#WKIjCrcCdtLLIKRXGVLhfsLPy6K2Ctdj4m1cRlOF5NE!1a'
+        };
+
+        let currentVideo = 'EPI0';
+
+        function playVideo(videoKey) {
+            videoFrame.src = videos[videoKey];
+            buttonContainer.style.display = 'none';
+        }
+
+        videoFrame.addEventListener('load', () => {
+            // Add a delay before showing options (assuming 10 seconds for video duration)
+            setTimeout(() => {
+                if (currentVideo === 'EPI0') {
+                    currentVideo = 'EPI1';
+                    playVideo('EPI1');
+                } else if (currentVideo === 'EPI1') {
+                    buttonContainer.style.display = 'flex';
+                    option1.textContent = 'Go to EPI1.2';
+                    option2.textContent = 'Go to EPI2';
+                    option1.onclick = () => {
+                        currentVideo = 'EPI1_2';
+                        playVideo('EPI1_2');
+                    };
+                    option2.onclick = () => {
+                        currentVideo = 'EPI2';
+                        playVideo('EPI2');
+                    };
+                } else if (currentVideo === 'EPI1_2') {
+                    currentVideo = 'EPI1';
+                    playVideo('EPI1');
+                } else if (currentVideo === 'EPI2') {
+                    buttonContainer.style.display = 'flex';
+                    option1.textContent = 'Go to EPI2.2';
+                    option2.textContent = 'Go to EPI3';
+                    option1.onclick = () => {
+                        currentVideo = 'EPI2_2';
+                        playVideo('EPI2_2');
+                    };
+                    option2.onclick = () => {
+                        currentVideo = 'EPI3';
+                        playVideo('EPI3');
+                    };
+                } else if (currentVideo === 'EPI2_2') {
+                    currentVideo = 'EPI1';
+                    playVideo('EPI1');
+                } else if (currentVideo === 'EPI3') {
+                    buttonContainer.style.display = 'flex';
+                    option1.textContent = 'Go to EPI3.2';
+                    option2.textContent = 'Go to EPI3.1';
+                    option1.onclick = () => {
+                        currentVideo = 'EPI3_2';
+                        playVideo('EPI3_2');
+                    };
+                    option2.onclick = () => {
+                        currentVideo = 'EPI3_1';
+                        playVideo('EPI3_1');
+                    };
+                } else if (currentVideo === 'EPI3_2') {
+                    currentVideo = 'EPI1';
+                    playVideo('EPI1');
+                }
+            }, 10000); // Change duration based on video length
+        });
+
+        // Start with EPI0
+        playVideo('EPI0');
+    </script>
+</body>
+</html>
